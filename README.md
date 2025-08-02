@@ -21,14 +21,15 @@
         
 
    🛠️ Tech Stack
-        --------------------------------
-        Layer	                Technology
-        --------------------------------
-        Backend	              Django (Python)
-        Frontend	            HTML, CSS, JavaScript, jQuery
-        Auth System	          Django’s built-in auth views
-        Email Backend	        Django SMTP Email Backend
-        Database	            SQLite
+
+        Layer	                     Technology
+
+        Backend	                     Django (Python)
+        Frontend	                 HTML, CSS, JavaScript, jQuery
+        Auth System	                 Django’s built-in auth views
+        Email Backend	             Django SMTP Email Backend
+        Database	                 SQLite
+        
         
 📂 Project Structure
 
