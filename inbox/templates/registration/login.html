@@ -1,0 +1,40 @@
+{% extends 'inbox/base.html' %}
+{% load static %}
+
+<!-- Title on tab browser -->
+{% block title %}Login{% endblock title %}
+
+<!-- Block sidebar content -->
+{% block sidebar-content %}
+    <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+{% endblock sidebar-content %}
+
+
+<!-- Page content -->
+{% block content %}
+
+    <div class="container mt-5" id="card-login">
+        <div class="card p-3 login-border">
+            <span class="text-center mt-2 text-pulse"><strong>RESTRICTED ACCESS</strong></span>
+            <form action="" method="POST" autocomplete="off">
+                {% csrf_token %}
+                <div class="input-group mt-4 mb-2">
+                    <input type="text" class="form-control" name="username" placeholder="Username">
+                </div>
+                <div class="input-group mb-2">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" onclick="myFunction()" type="checkbox" style="float: right;">
+                </div>
+                <div class="d-grid gap-2 mt-2">
+                    <input class="btn btn-success btn-sm mt-2 mb-2" type="submit" value="Enter" id="btn-enter">
+                </div>
+            </form>
+            <center class="mt-5 mb-5">
+                <i class="bx bxs-send bx-rotate-270 mt-2 mb-2" style="color: #d3d3d3; font-size: 60px; margin-left: 5px;"></i>
+            </center>
+        </div>
+    </div> <!-- END // container -->
+
+{% endblock content %}

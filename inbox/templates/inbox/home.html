@@ -1,0 +1,36 @@
+{% extends 'inbox/base.html' %}
+
+<!-- Title on tab browser -->
+{% block title %}Home{% endblock title %}
+
+<!-- Page Content -->
+{% block content %}
+    <!-- Typed effect -->
+    <div class="block-position">
+        <h1 class="text-light typed-text">We
+            <span id="element" class="span-s"></span>
+        </h1>
+    </div>
+
+    <!-- Message -->
+    <div>
+        <button class="btn btn-light msg-button pulse" data-bs-toggle="modal" data-bs-target="#messageModal">
+            <i class="fas fa-envelope fa-2x"></i>
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <i class="fas fa-envelope"></i>&nbsp;&nbsp; Message
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

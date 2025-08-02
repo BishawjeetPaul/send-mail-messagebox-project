@@ -1,0 +1,13 @@
+{% extends 'inbox/dashboard/baseDashboard.html' %}
+
+{% block icon %}
+    <i class="fas fa-bell fa-4x"></i>
+{% endblock icon %}
+
+{% block value %}
+    {{ today.count }}
+{% endblock value %}
+
+{% block dash-title %}
+    TODAY
+{% endblock dash-title %}

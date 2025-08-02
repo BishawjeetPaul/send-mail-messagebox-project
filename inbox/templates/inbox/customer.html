@@ -1,0 +1,96 @@
+{% extends 'inbox/base.html' %}
+
+<!-- Title on tab browser -->
+{% block title %}Customer{% endblock title %}
+
+<!-- Block navbar content -->
+{% block nav-content %}
+    <i class="fas fa-user-alt">&nbsp;&nbsp; <span style="font-size: 16px;">{{ customer.name }}</span></i>
+{% endblock nav-content %}
+
+<!-- Block sidebar content -->
+{% block sidebar-content %}
+    <center>
+        <!-- Welcome User -->
+        Welcome: <span class="text-success">{{ user.get_username }}</span>
+        <br>
+        <br>
+    </center>
+    <a class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
+    <a href="{% url 'admin:index' %}" target="_blank" class="btn btn-outline-success btn-sm">Admin</a>
+{% endblock sidebar-content %}
+
+<!-- Page Content -->
+{% block content %}
+    <div class="container">
+        <div class="card text-center mt-3">
+            <div class="card-header">
+                Received on: {{ customer.created_at | date:'d/m/Y' }} at {{ customer.created_at | date:'H:i'}}
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/mark_message" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- Input ID hidden -->
+                    <input type="hidden" value="{{ customer.id }}" name="id">
+
+                    <div class="input-group mb-2">
+                        <span class="input-group-text justify-content-center side-label"><i class="fas fa-phone-alt"></i></span>
+                        <input id="input-bg" class="form-control" value="{{ customer.phone }}" readonly>
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <span class="input-group-text justify-content-center side-label"><i class="fas fa-envelope"></i></span>
+                        <input id="input-bg" class="form-control" value="{{ customer.email }}" readonly>
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <span class="input-group-text justify-content-center side-label"><i class="fas fa-user-edit"></i></span>
+                        <input id="input-bg" class="form-control" value="{{ customer.subject }}" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea class="form-control" id="input-bg" rows="7" readonly>{{ customer.message }}</textarea>
+                    </div>
+
+                    <div class="input-group mt-2 mb-3">
+                        <a id="paper-clip" href="/media/{{ customer.file }}" target="_blank" class="bg-dark text-light input-group-text justify-content-center side-label">
+                            <i class="fas fa-paperclip"></i>
+                        </a>
+                        {% if customer.file == '' %}
+                            <input class="form-control" id="input-bg" value="no attachment" readonly>
+                        {% else %}
+                            <input class="form-control" id="input-bg" value="{{ customer.file }}" readonly>
+                        {% endif %}
+                    </div>
+
+                    <!-- This value goes to backend () -->
+                    {% if customer.status == 'Pending' %}
+                        <input type="hidden" class="form-control" name="status" value="Read">
+                    {% endif %}
+
+                    <!-- Include Mark Modal -->
+                    {% include 'modals/mark.html' %}
+
+                </form>
+
+                {% if customer.status == 'Pending' %}
+                    <a id="btn-back" class="btn btn-dark" title="Back" data-bs-toggle="modal" data-bs-target="#markModal">
+                {% else %}
+                    <a href="{% url 'inbox' %}" id="btn-back" class="btn btn-dark" title="Back">
+                {% endif %}
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                <a id="reply" class="btn text-light" title="Reply email" data-bs-toggle="modal" data-bs-target="#replyModal">
+                    <i class="fas fa-reply"></i>&nbsp;&nbsp; <span>Reply</span>
+                </a>
+            </div>
+        </div>
+    </div> <!-- END // Container -->
+
+    <!-- Ajax Spinner (Backend) -->
+    <div id="bg-spinner">
+        <div id="position-spinner">
+            <span id="spinner"></span>
+        </div>
+    </div>
+{% endblock content %}

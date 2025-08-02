@@ -1,0 +1,56 @@
+{% extends 'modals/baseModal.html' %}
+
+<!-- Modal ID -->
+{% block modal-id %}id="messageModal"{% endblock modal-id %}
+
+<!-- Class Modal-xl -->
+{% block width %}modal-md{% endblock width %}
+
+<!-- Modal TITLE -->
+{% block modal-title %}
+    <i class="fas fa-envelope"></i>&nbsp;&nbsp; Message
+{% endblock modal-title %}
+
+<!-- FORM -->
+{% block form %}
+    <form action="/send_message" method="POST" autocomplete="off" class="was-validated" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body">
+            <div class="mb-1">
+                <input type="text" class="form-control" name="name" maxlength="30" placeholder="Name" required>
+            </div>
+            <div class="mb-1">
+                <input type="text" class="form-control phone" name="phone" maxlength="30" placeholder="Phone" required>
+            </div>
+            <div class="mb-1">
+                <input type="email" class="form-control" name="email" maxlength="30" placeholder="Email" required>
+            </div>
+            <div class="mb-1">
+                <input type="text" class="form-control" name="subject" maxlength="30" placeholder="Subject" required>
+            </div>
+            <hr>
+            <div class="form-group mb-2">
+                <textarea name="message" id="message" class="form-control" rows="10" maxlength="1000" placeholder="Your message...." required></textarea>
+            </div>
+            <!-- Character remaining counter -->
+            <span id="remaining"></span>
+            <hr>
+            <div class="form-group mb-3">
+                <input type="file" name="file" class="form-control" id="file" required>
+            </div>
+            <h6 class="text-danger text-siz">Note for more than one file use:
+                <strong class="text-success">rar</strong> or <strong class="text-success">zip</strong>.
+            </h6>
+            <hr>
+            <div class="d-grid gap-2 mt-3">
+                <button class="btn text-align message" type="submit">Send Message &nbsp;&nbsp;
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Input Hidden (all messages arrives as pending) -->
+        <input type="hidden" value="pending" name="status">
+    </form>
+{% endblock form %}
+
+{% block close %}{% endblock close %}

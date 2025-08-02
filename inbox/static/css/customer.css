@@ -1,0 +1,28 @@
+/* BG inputs */
+#input-bg {
+    background-color: #fff;
+}
+
+#btn-back {
+    width: 45px;
+    float: left;
+    border-radius: 0px;
+}
+/* Label of the inputs (individual messages) */
+.side-label {
+    width: 45px;
+    font-size: 15px;
+}
+/* Button to reply the message */
+#reply {
+    width: 110px;
+    float: left;
+    margin-left: 5px;
+    background-color: #2e856e;
+    border-radius: 0px;
+}
+
+/* Upload paper clip icon */
+#paper-clip {
+    text-decoration: none;
+}

@@ -1,0 +1,140 @@
+{% extends 'inbox/base.html' %}
+{% load static %}
+
+<!-- Title on tab browser -->
+{% block title %}Inbox{% endblock title %}
+
+<!-- Block image denied here -->
+{% block image %}
+    
+{% endblock image %}
+
+<!-- Block Typed -->
+{% block typed %}
+
+{% endblock typed %}
+
+<!-- Block navbar content -->
+{% block nav-content %}
+    <i class="fas fa-envelope align-middle nva-ii"></i>&nbsp;&nbsp;<span class="align-middle">Inbox</span>
+{% endblock nav-content %}
+
+<!-- DateTime (desktop mode) -->
+{% block datetime %}
+    <div class="text-light" id="desktop-datetime" style="font-size: 12px; margin-top: 5px;">{% now "l (d/m/Y)" %} &nbsp;
+        <span style="color: #8abaae; font-weight: bold;" id="clock"></span>
+    </div>
+{% endblock datetime %}
+
+<!-- Block sidebar content -->
+{% block sidebar-content %}
+    <center>
+        <!-- Welcome User -->
+        Welcome: <span class="text-success">{{ user.get_username }}</span>
+        <br>
+        <br>
+    </center>
+    <a class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
+    <a href="{% url 'admin:index' %}" target="_blank" class="btn btn-outline-success btn-sm">Admin</a>
+{% endblock sidebar-content %}
+
+<!-- Page Content -->
+{% block content %}
+    <br>
+    <div class="container-fluid mt-3 con-sty">
+        <!-- Dashboard -->
+        <div class="hide">
+            {% include 'inbox/dashboard/dashboard.html' %}
+        </div>
+        <br>
+
+        <!-- Global Search -->
+        <form class="hide">
+            <div class="input-group input-group-sm mb-3">
+                <input type="text" name="q" class="form-control input-sm" placeholder="Search for..." value="{{ request.GET.q }}">
+                <button class="btn btn-secondary" title="Search"><i class="fas fa-search"></i></button>
+                <a href="{% url 'inbox' %}" class="btn btn-dark" style="margin-left: 2px;" title="Refresh"><i class="fas fa-sync-alt"></i></a>
+            </div>
+        </form>
+        <!-- Table of messages -->
+        <div class="col-md-12 hide">
+            <div style="margin-top: 5px;">
+                <table class="table table-sm">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th style="width: 18%;">Name</th>
+                            <th style="width: 13%;">Phone</th>
+                            <th style="width: 18%;">Email</th>
+                            <th style="width: 18%;">Subject</th>
+                            <th style="width: 15%;">Received On</th>
+                            <th style="width: 10%;">Status</th>
+                            <th style="width: 8%; text-align: center;" colspan="2">Actions</th>
+                        </tr>
+                    </thead>
+                    <!-- Data from backend -->
+                    {% for customer in customers %}
+                        <tr id="chk_td">
+                            <td>{{ customer.name }}</td>
+                            <td>{{ customer.phone }}</td>
+                            <td>{{ customer.email }}</td>
+                            <td>{{ customer.subject }}</td>
+                            <td>{{ customer.created_at | date:'d/m/y (H:i)' }}</td>
+                            {% if customer.status == 'Pending' %}
+                                <td class="text-danger">{{ customer.status }}</td>
+                            {% else %}
+                                <td>{{ customer.status }}</td>
+                            {% endif %}
+                            <td>
+                                <button class="btn btn-secondary btn-sm btn-action" title="Delete message" data-bs-toggle="modal" data-bs-target="#deleteModal{{ customer.pk }}">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <a class="btn text-light btn-sm btn-action" style="background-color: #2e856e;" title="Read message" href="/customer/{{ customer.id }}">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- Modal delete confirmation -->
+                        {% include 'modals/delete.html' %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <!-- PAGINATION -->
+        <nav>
+            {% if customers.has_other_pages %}
+                <ul class="pagination">
+                    {% if customers.has_previous %}
+                        <a href="?page=1" class="btn btn-outline-secondary mb-4" style="border-radius: 1px; border: 1px solid #d3d3d3">First</a>
+                        <li class="page-item"><a class="page-link" href="?page={{ customers.previous_page_number }}"><i class="fas fa-angle-double-left"></i></a></li>
+                    {% else %}
+                        <li class="page-item disabled"></li>
+                    {% endif %}
+
+                    {% for i in customers.paginator.page_range %}
+                        {% if customers..number == i %}
+                            <li class="page-item active"><span class="page-link">{{ i }}<span class="sr-only"></span></span></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if customers.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ customers.next_page_number }}"><i class="fas fa-angle-double-right"></i></a></li>
+                        <a href="?page={{ customers.paginator.num_pages }}" class="btn btn-outline-secondary mb-4" style="border-radius: 1px; border: 1px solid #d3d3d3; border-left: none;">Last</a>  
+                    {% else %}
+                        <li class="page-item disabled"></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        </nav>
+    </div> <!-- END//Container-->
+
+    <!-- If no messages, show this content -->
+    <span class="text-danger" id="msg"></span>
+    <!-- Button to refresh the page -->
+    <a href="{% url 'inbox' %}" id="refresh"></a>
+
+{% endblock content %}
